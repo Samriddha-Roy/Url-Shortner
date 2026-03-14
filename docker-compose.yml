@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # URL Shortener Application
+  url-shortener:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: url-shortener-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - BASE_URL=http://localhost:3000
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - url-shortener-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # MongoDB (Optional - for production use)
+  mongodb:
+    image: mongo:7.0
+    container_name: url-shortener-db
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+      - MONGO_INITDB_DATABASE=urlshortener
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: unless-stopped
+    networks:
+      - url-shortener-network
+    profiles:
+      - with-mongodb
+
+  # Redis (Optional - for caching)
+  redis:
+    image: redis:7.2-alpine
+    container_name: url-shortener-cache
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - url-shortener-network
+    profiles:
+      - with-redis
+
+networks:
+  url-shortener-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:

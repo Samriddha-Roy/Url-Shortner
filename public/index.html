@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🔗 URL Shortener</h1>
+            <p class="subtitle">Transform long URLs into short, shareable links</p>
+        </header>
+
+        <main class="main">
+            <div class="url-form-container">
+                <form id="urlForm" class="url-form">
+                    <div class="input-group">
+                        <input 
+                            type="url" 
+                            id="originalUrl" 
+                            placeholder="Enter your long URL here..." 
+                            required
+                            class="url-input"
+                        >
+                        <button type="submit" class="shorten-btn" id="shortenBtn">
+                            <span class="btn-text">Shorten URL</span>
+                            <div class="spinner" id="spinner"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <div id="result" class="result hidden">
+                    <div class="result-card">
+                        <h3>✅ URL Shortened Successfully!</h3>
+                        <div class="url-display">
+                            <label>Short URL:</label>
+                            <div class="url-copy-group">
+                                <input type="text" id="shortUrl" readonly class="short-url-input">
+                                <button id="copyBtn" class="copy-btn">📋 Copy</button>
+                            </div>
+                        </div>
+                        <div class="url-display">
+                            <label>Original URL:</label>
+                            <div class="original-url" id="originalUrlDisplay"></div>
+                        </div>
+                        <div class="actions">
+                            <button id="visitBtn" class="visit-btn">🔗 Visit Link</button>
+                            <button id="statsBtn" class="stats-btn">📊 View Stats</button>
+                            <button id="newUrlBtn" class="new-url-btn">➕ Shorten Another</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="stats" class="stats hidden">
+                    <div class="stats-card">
+                        <h3>📊 URL Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Clicks:</span>
+                                <span class="stat-value" id="clickCount">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Created:</span>
+                                <span class="stat-value" id="createdDate">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Short Code:</span>
+                                <span class="stat-value" id="shortCode">-</span>
+                            </div>
+                        </div>
+                        <button id="closeStats" class="close-stats-btn">✖ Close Stats</button>
+                    </div>
+                </div>
+
+                <div id="error" class="error hidden">
+                    <div class="error-card">
+                        <h3>❌ Error</h3>
+                        <p id="errorMessage"></p>
+                        <button id="closeError" class="close-error-btn">✖ Close</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">⚡</span>
+                    <span>Fast & Reliable</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🔒</span>
+                    <span>Secure & Private</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">📱</span>
+                    <span>Mobile Friendly</span>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">📊</span>
+                    <span>Click Analytics</span>
+                </div>
+            </div>
+            <p class="footer-text">Built with Node.js, Express.js & Modern Web Technologies</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+# Node modules
+node_modules/
+frontend/node_modules/
+
+# Build artifacts
+frontend/build/
+dist/
+build/
+
+# Development files
+.git/
+.gitignore
+README*.md
+START-HERE.md
+
+# Environment files (will be copied explicitly)
+.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker files (avoid recursion)
+Dockerfile*
+docker-compose*.yml
+
+# Test files
+test/
+tests/
+__tests__/

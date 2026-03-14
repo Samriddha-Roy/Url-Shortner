@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # URL Shortener with MongoDB
+  url-shortener:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: url-shortener-prod
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - BASE_URL=http://localhost:3000
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/urlshortener?authSource=admin
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+    networks:
+      - url-shortener-network
+
+  # MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: url-shortener-db-prod
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+      - MONGO_INITDB_DATABASE=urlshortener
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: unless-stopped
+    networks:
+      - url-shortener-network
+
+  # Redis for caching
+  redis:
+    image: redis:7.2-alpine
+    container_name: url-shortener-cache-prod
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - url-shortener-network
+
+  # Nginx reverse proxy (optional)
+  nginx:
+    image: nginx:alpine
+    container_name: url-shortener-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - url-shortener
+    restart: unless-stopped
+    networks:
+      - url-shortener-network
+    profiles:
+      - with-nginx
+
+networks:
+  url-shortener-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:

@@ -1,0 +1,27 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "description": "Scalable URL shortener service",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server-test.js",
+    "start:mongodb": "node src/server.js",
+    "dev": "nodemon src/server-test.js",
+    "setup": "node setup.js",
+    "build-frontend": "cd frontend && npm install && npm run build"
+  },
+  "keywords": ["url-shortener", "express", "mongodb"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0",
+    "dotenv": "^16.3.1",
+    "nanoid": "^3.3.7",
+    "express-rate-limit": "^7.1.5",
+    "valid-url": "^1.0.9"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
